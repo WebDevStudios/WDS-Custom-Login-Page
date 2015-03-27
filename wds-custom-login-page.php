@@ -186,13 +186,6 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			}
 
 
-			$args = array(
-				'redirect'    => home_url(),
-				'id_username' => 'user',
-				'id_password' => 'pass',
-				'echo'        => false, // return, don't echo
-			);
-
 			if ( $login ) {
 
 				switch ( $login ) {
@@ -218,8 +211,33 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			}
 
 			// return the post content (if there is any), the message (if there is any), and the login form with the passed args
-			return $content . $message . wp_login_form( $args );
+			return $content . $message . $this->render_login_form();
 
+		}
+
+		/**
+		 * Function to display the actual login form
+		 *
+		 * @param string $redirect Optional page to redirect the user to after logging in. Defaults to site home.
+		 * @param bool   $echo     Whether to echo or return the login form. Default is false, return the login form.
+		 */
+		public function render_login_form( $redirect = '', $echo = false ) {
+
+			// set a default for the redirect if no value was passed
+			if ( '' == $redirect ) {
+				$redirect = home_url();
+			}
+
+			// set up the arguments
+			$args = array(
+				'redirect'    => $redirect,
+				'id_username' => 'user',
+				'id_password' => 'pass',
+				'echo'        => $echo, // return, don't echo
+			);
+
+			// return the form
+			return wp_login_form( $args );
 		}
 
 	}
