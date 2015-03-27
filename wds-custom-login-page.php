@@ -49,6 +49,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			add_action( 'init', array( $this, 'redirect_login_page' ) );
 			add_action( 'wds_insert_login_page', array( $this, 'insert_login_page' ) );
 			add_filter( 'the_content', array( $this, 'insert_login_form' ) );
+			add_shortcode( 'login_form', array( $this, 'render_login_form' ) );
 		}
 
 		/**
