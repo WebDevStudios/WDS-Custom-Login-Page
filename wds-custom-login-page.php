@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( ! class_exists( 'WDS_Custom_Login_page' ) ) {
+if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 
-	class WDS_Custom_Login_page {
+	class WDS_Custom_Login_Page {
 
 		/**
 		 * Login page slug. This will always exist, one way or another.
@@ -224,13 +224,13 @@ if ( ! class_exists( 'WDS_Custom_Login_page' ) ) {
 
 	}
 
-	$_GLOBALS['WDS_Custom_Login_page'] = new WDS_Custom_Login_page;
-	$_GLOBALS['WDS_Custom_Login_page']->do_hooks();
+	$_GLOBALS['WDS_Custom_Login_Page'] = new WDS_Custom_Login_Page;
+	$_GLOBALS['WDS_Custom_Login_Page']->do_hooks();
 }
 
 /**
  * Optional wrapper function for calling this class
  */
 function wds_login_page() {
-	return new WDS_Custom_Login_page;
+	return new WDS_Custom_Login_Page;
 }
