@@ -252,3 +252,14 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 function wds_login_page() {
 	return new WDS_Custom_Login_Page;
 }
+
+/**
+ * Public template tag to just spit out the login form. Wrapper for
+ * WDS_Custom_Login_Page::render_login_form()
+ *
+ * @param string $redirect Optional page to redirect the user to after logging in. Defaults to site home.
+ * @param bool   $echo     Whether to echo or return the login form. Default is false, return the login form.
+ */
+function wds_login_form( $redirect = '', $echo = false ) {
+	return wds_login_page()->render_login_form( $redirect, $echo );
+}
