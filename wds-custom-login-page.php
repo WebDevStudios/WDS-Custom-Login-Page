@@ -224,6 +224,10 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 */
 		public function render_login_form( $redirect = '', $echo = false ) {
 
+			// if the user is already logged in, we don't need a form
+			if ( is_user_logged_in() )
+				return;
+
 			// set a default for the redirect if no value was passed
 			if ( '' == $redirect ) {
 				$redirect = home_url();
