@@ -178,6 +178,9 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			if ( locate_template( 'page-login.php', false, false ) || locate_template( 'page-' . $this->login_slug, false, false ) ) {
 				return $content;
 			}
+
+			// if there's a template file matching either template-login.php or template-{login page slug}.php, let that page template deal with the login form
+			if ( 'template-login.php' == get_post_meta( get_the_ID(), '_wp_page_template', true ) || 'template-' . $this->login_slug == get_post_meta( get_the_ID(), '_wp_page_template', true ) ) {
 				return $content;
 			}
 
