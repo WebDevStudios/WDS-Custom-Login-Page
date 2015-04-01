@@ -19,16 +19,6 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 	class WDS_Custom_Login_Page {
 
 		/**
-		 * Login page slug. This will be configurable if we want to change the page slug from what was created
-		 */
-		public $login_slug = '';
-
-		/**
-		 * Login page slug. This will always exist, one way or another.
-		 */
-		private $login_page = '';
-
-		/**
 		 * Construct function to get things started.
 		 */
 		public function __construct() {
@@ -37,8 +27,6 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			$this->basename       = plugin_basename( __FILE__ );
 			$this->directory_path = plugin_dir_path( __FILE__ );
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
-			$this->login_slug     = apply_filters( 'wds_login_slug', wds_login_get_option( 'login_slug' ) );
-			$this->login_page     = home_url( "/$this->login_slug/" );
 
 			// Activation/Deactivation Hooks
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
