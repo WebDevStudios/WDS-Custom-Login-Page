@@ -11,11 +11,6 @@ class WDS_Login_Page_Options {
 	public $login_slug = '';
 
 	/**
-	 * Login page slug. This will always exist, one way or another.
-	 */
-	public $login_page = '';
-
-	/**
  	 * Option key, and option page slug
  	 * @var string
  	 */
