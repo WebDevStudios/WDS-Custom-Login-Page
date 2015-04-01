@@ -19,6 +19,11 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 	class WDS_Custom_Login_Page {
 
 		/**
+		 * Login page slug. This will be configurable if we want to change the page slug from what was created
+		 */
+		public $login_slug = '';
+
+		/**
 		 * Login page slug. This will always exist, one way or another.
 		 */
 		private $login_page = '';
@@ -269,4 +274,11 @@ function wds_login_page() {
  */
 function wds_login_form( $redirect = '', $echo = false ) {
 	return wds_login_page()->render_login_form( $redirect, $echo );
+}
+
+/**
+ * Get the login page slug from outside the class
+ */
+function wds_login_page_slug() {
+	return wds_login_page()->login_slug;
 }
