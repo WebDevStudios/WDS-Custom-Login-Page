@@ -46,6 +46,7 @@ class WDS_Login_Page_Options {
 	public function __construct() {
 		// Set our title
 		$this->title = __( 'Login Page Options', 'maintainn' );
+		$this->login_slug     = 'login';
 	}
 
 	/**
