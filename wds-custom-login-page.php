@@ -170,7 +170,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 */
 		public function insert_login_form( $content ) {
 			// bail if we aren't on the login page
-			if ( ! is_admin() && ! is_page( 'login' ) ) {
+			if ( ! is_admin() && ! is_page( 'login' ) && ! is_page( $this->login_slug ) ) {
 				return $content;
 			}
 
