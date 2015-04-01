@@ -37,7 +37,8 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			$this->basename       = plugin_basename( __FILE__ );
 			$this->directory_path = plugin_dir_path( __FILE__ );
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
-			$this->login_page     = home_url( '/login/' );
+			$this->login_slug     = apply_filters( 'wds_login_slug', wds_login_get_option( 'login_slug' ) );
+			$this->login_page     = home_url( "/$this->login_slug/" );
 
 			// Activation/Deactivation Hooks
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
