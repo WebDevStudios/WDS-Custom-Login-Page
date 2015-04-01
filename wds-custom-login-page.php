@@ -64,7 +64,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		public function activate() {
 
 			// check if a login page exists, if not, create one
-			if ( !$this->get_page_by_name( 'login' ) ) {
+			if ( !$this->get_page_by_name( 'login' ) && ! $this->get_page_by_name( $this->login_slug ) ) {
 				do_action( 'wds_insert_login_page' );
 			}
 
