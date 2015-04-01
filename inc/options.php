@@ -108,7 +108,7 @@ class WDS_Login_Page_Options {
 			'id'      => 'login_slug',
 			'type'    => 'select',
 			'options' => $this->get_page_list(),
-			'default' => wds_login_page_slug(),
+			'default' => wds_login_slug(),
 		) );
 
 	}
@@ -169,5 +169,16 @@ function wds_login_get_option( $key = '' ) {
 	return cmb2_get_option( wds_login_options()->key, $key );
 }
 
+function wds_login_page() {
+	return home_url( '/' . wds_login_slug() . '/' );
+}
+
+function wds_login_slug() {
+	$login_slug = ( wds_login_get_option( 'login_slug' ) ) ? wds_login_get_option( 'login_slug' ) : wds_login_options()->login_slug;
+	$login_slug = apply_filters( 'wds_login_slug', $login_slug );
+	return $login_slug;
+}
+
 // Get it started
 wds_login_options();
+
