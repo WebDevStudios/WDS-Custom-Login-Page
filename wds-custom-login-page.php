@@ -19,11 +19,6 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 	class WDS_Custom_Login_Page {
 
 		/**
-		 * Login page slug. This will always exist, one way or another.
-		 */
-		private $login_page = '';
-
-		/**
 		 * Construct function to get things started.
 		 */
 		public function __construct() {
@@ -32,11 +27,16 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			$this->basename       = plugin_basename( __FILE__ );
 			$this->directory_path = plugin_dir_path( __FILE__ );
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
-			$this->login_page     = home_url( '/login/' );
+
+			// Include the options class
+			require_once( $this->directory_path . '/inc/options.php' );
 
 			// Activation/Deactivation Hooks
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
 			register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+
+			// Make sure we have our requirements, and disable the plugin if we do not have them.
+			add_action( 'admin_notices', array( $this, 'maybe_disable_plugin' ) );
 		}
 
 		/**
@@ -58,7 +58,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		public function activate() {
 
 			// check if a login page exists, if not, create one
-			if ( !$this->get_page_by_name( 'login' ) ) {
+			if ( !$this->get_page_by_name( 'login' ) && ! $this->get_page_by_name( wds_login_slug() ) ) {
 				do_action( 'wds_insert_login_page' );
 			}
 
@@ -69,6 +69,37 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 */
 		public function deactivate() {
 
+		}
+
+		/**
+		 * Check that all plugin requirements are met
+		 *
+		 * @return boolean
+		 */
+		public static function meets_requirements() {
+			// Make sure we have CMB so we can use it
+			if ( ! defined( 'CMB2_LOADED' ) ) {
+				return false;
+			}
+
+			// We have met all requirements
+			return true;
+		}
+
+		/**
+		 * Check if the plugin meets requirements and
+		 * disable it if they are not present.
+		 */
+		public function maybe_disable_plugin() {
+			if ( ! $this->meets_requirements() ) {
+				// Display our error
+				echo '<div id="message" class="error">';
+				echo '<p>' . sprintf( __( 'WDS Simple Page Builder requires CMB2 but could not find it. The plugin has been <a href="%s">deactivated</a>. Please make sure all requirements are available.', 'wds-simple-page-builder' ), admin_url( 'plugins.php' ) ) . '</p>';
+				echo '</div>';
+
+				// Deactivate our plugin
+				deactivate_plugins( $this->basename );
+			}
 		}
 
 		/**
@@ -104,7 +135,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 * Send to login page on logout
 		 */
 		public function logout_page() {
-			wp_redirect( $this->login_page . '?login=false' );
+			wp_redirect( wds_login_page() . '?login=false' );
 			exit;
 		}
 
@@ -115,7 +146,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 
 			// if they were actually getting here because of an empty login
 			if ( '' == $username || '' == $password ) {
-				wp_redirect( $this->login_page . "?login=empty" );
+				wp_redirect( wds_login_page() . "?login=empty" );
 				exit;
 			}
 
@@ -125,7 +156,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 * If login has failed, redirect to the login page
 		 */
 		public function login_failed() {
-			wp_redirect( $this->login_page . '?login=failed' );
+			wp_redirect( wds_login_page() . '?login=failed' );
 			exit;
 		}
 
@@ -136,7 +167,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			$page_viewed = basename($_SERVER['REQUEST_URI']);
 
 			if ( 'wp-login.php' == $page_viewed && $_SERVER['REQUEST_METHOD'] == 'GET') {
-				wp_redirect( $this->login_page );
+				wp_redirect( wds_login_page() );
 				exit;
 			}
 		}
@@ -164,11 +195,17 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 */
 		public function insert_login_form( $content ) {
 			// bail if we aren't on the login page
-			if ( ! is_admin() && ! is_page( 'login' ) ) {
+			if ( ! is_admin() && ! is_page( 'login' ) && ! is_page( wds_login_slug() ) ) {
 				return $content;
 			}
 
-			if ( locate_template( 'template-login.php', false, false ) ) {
+			// if there's a defined login page already in the theme, let that page template deal with the login form
+			if ( locate_template( 'page-login.php', false, false ) || locate_template( 'page-' . wds_login_slug(), false, false ) ) {
+				return $content;
+			}
+
+			// if there's a template file matching either template-login.php or template-{login page slug}.php, let that page template deal with the login form
+			if ( 'template-login.php' == get_post_meta( get_the_ID(), '_wp_page_template', true ) || 'template-' . wds_login_slug() == get_post_meta( get_the_ID(), '_wp_page_template', true ) ) {
 				return $content;
 			}
 
@@ -256,7 +293,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 /**
  * Optional wrapper function for calling this class
  */
-function wds_login_page() {
+function wds_custom_login_page() {
 	return new WDS_Custom_Login_Page;
 }
 
@@ -268,5 +305,5 @@ function wds_login_page() {
  * @param bool   $echo     Whether to echo or return the login form. Default is false, return the login form.
  */
 function wds_login_form( $redirect = '', $echo = false ) {
-	return wds_login_page()->render_login_form( $redirect, $echo );
+	return wds_custom_login_page()->render_login_form( $redirect, $echo );
 }
