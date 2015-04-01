@@ -6,6 +6,16 @@
 class WDS_Login_Page_Options {
 
 	/**
+	 * Login page slug. This will be configurable if we want to change the page slug from what was created
+	 */
+	public $login_slug = '';
+
+	/**
+	 * Login page slug. This will always exist, one way or another.
+	 */
+	public $login_page = '';
+
+	/**
  	 * Option key, and option page slug
  	 * @var string
  	 */
