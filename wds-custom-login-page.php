@@ -174,7 +174,10 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 				return $content;
 			}
 
-			if ( locate_template( 'template-login.php', false, false ) ) {
+			// if there's a defined login page already in the theme, let that page template deal with the login form
+			if ( locate_template( 'page-login.php', false, false ) || locate_template( 'page-' . $this->login_slug, false, false ) ) {
+				return $content;
+			}
 				return $content;
 			}
 
