@@ -28,6 +28,9 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			$this->directory_path = plugin_dir_path( __FILE__ );
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
 
+			// Include the options class
+			require_once( $this->directory_path . '/inc/options.php' );
+
 			// Activation/Deactivation Hooks
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
 			register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
