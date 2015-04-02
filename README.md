@@ -33,3 +33,10 @@ Add this function somewhere in your login page's custom template file:
 `$echo` tells the plugin whether to echo the login form or just return it. It defaults to `false` and just returns the form. If you want to display it directly on a page without having to echo it (and you were setting the redirect to the default), you might use it like this:
 
 `<?php wds_login_form( '', true ); ?>`
+
+### Using the shortcode
+Did I mention there's a shortcode? You can also not worry about all this coding stuff and just insert a login form shortcode in the body of your login page's content. The shortcode is really simple:
+
+`[login_form]`
+
+The shortcode takes no parameters and just uses the default behavior for redirection.
