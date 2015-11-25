@@ -30,10 +30,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 
 			// Include required files.
 			require_once( $this->directory_path . '/inc/options.php' );
-
-			if ( ! defined( 'CMB2_LOADED' ) ) {
-				require_once( $this->directory_path . '/inc/cmb2/init.php' );
-			}
+			require_once( $this->directory_path . '/inc/cmb2/init.php' );
 
 			// Activation/Deactivation Hooks.
 			register_activation_hook( __FILE__, array( $this, 'activate' ) );
