@@ -331,3 +331,15 @@ function wds_custom_login_page() {
 function wds_login_form( $redirect = '', $echo = false ) {
 	return wds_custom_login_page()->render_login_form( $redirect, $echo );
 }
+
+/**
+ * Return one of several possible messages depending on what the login request returns.
+ * @return string        A message about the login attempt.
+ */
+function wds_login_form_message( $echo = false ) {
+	if ( $echo ) {
+		echo wds_custom_login_page()->get_message(); // WPCS: XSS ok.
+		return;
+	}
+	return wds_custom_login_page()->get_message();
+}
