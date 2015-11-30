@@ -2,8 +2,8 @@
 Contributors: jazzs3quence, webdevstudios
 Tags: login page, login
 Requires at least: 2.7
-Tested up to: 4.2.2
-Stable tag: 1.0.0
+Tested up to: 4.4
+Stable tag: 1.1
 
 Create a custom login page on your WordPress site.
 
@@ -62,6 +62,10 @@ The shortcode takes no parameters and just uses the default behavior for redirec
 
 
 == Changelog ==
+
+= 1.1 =
+* Updated how CMB2 is required
+* Created new wrapper function to independently a login message. Can be used if the wds_login_form function is invoked manually.
 
 = 1.0 =
 * Initial Release
