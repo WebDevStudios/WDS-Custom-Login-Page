@@ -65,6 +65,7 @@ The shortcode takes no parameters and just uses the default behavior for redirec
 
 = 1.1 =
 * Updated how CMB2 is required
+* Use the internal cmb2_get_option wrapper to get the login page slug. get_option was being used but wrong option name was passed.
 * Created new wrapper function to independently a login message. Can be used if the wds_login_form function is invoked manually.
 
 = 1.0 =
