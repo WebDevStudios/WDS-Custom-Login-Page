@@ -5,7 +5,7 @@
  * Description: Plugin that adds a custom login page.
  * Author: WebDevStudios
  * Author URI: http://webdevstudios.com
- * Version: 1.0.0
+ * Version: 1.1
  * License: GPLv2
  */
 
