@@ -162,8 +162,8 @@ function wds_login_options() {
 /**
  * Wrapper function around cmb2_get_option
  * @since  0.1.0
- * @param  string  $key Options array key
- * @return mixed        Option value
+ * @param  string $key Options array key.
+ * @return mixed       Option value
  */
 function wds_login_get_option( $key = '' ) {
 	return cmb2_get_option( wds_login_options()->key, $key );
