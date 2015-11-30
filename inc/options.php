@@ -174,7 +174,7 @@ function wds_login_page() {
 }
 
 function wds_login_slug() {
-	$login_slug = get_option( 'login_slug', 'login' );
+	$login_slug = wds_login_get_option( 'login_slug' );
 	$login_slug = apply_filters( 'wds_login_slug', $login_slug );
 	return $login_slug;
 }
