@@ -268,7 +268,7 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 					$message .= '<p class="login-msg">' . __( 'You have been logged out. You will be redirected to the home page in 5 seconds.', 'wds-custom-login-page' ) . '</p>';
 					$message .= '<p><a href="' . home_url() . '">' . __( 'Go there now.', 'wds-custom-login-page' ) . '</a></p>';
 					$redirect = '<script type="text/javascript">setTimeout("window.location=\'' . home_url() . '\'",5000);</script>';
-					return $content. $message . $redirect;
+					return $message . $redirect;
 
 				default :
 					break;
