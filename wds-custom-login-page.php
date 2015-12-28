@@ -5,7 +5,7 @@
  * Description: Plugin that adds a custom login page.
  * Author: WebDevStudios
  * Author URI: http://webdevstudios.com
- * Version: 1.0.0
+ * Version: 1.1
  * License: GPLv2
  */
 
@@ -136,8 +136,10 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 * Send to login page on logout
 		 */
 		public function logout_page() {
-			wp_redirect( wds_login_page() . '?login=false' );
-			exit;
+			if( $redirect = apply_filters( 'logout_redirect_url', wds_login_page() . '?login=false' ) ) {
+				wp_redirect( $redirect );
+				exit;
+		}
 		}
 
 		/**
@@ -227,31 +229,54 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 
 			if ( $login ) {
 
-				switch ( $login ) {
-
-					case 'failed' :
-						$message .= '<p class="login-msg">' . __( '<strong>ERROR:</strong> Invalid username and/or password.', 'wds-custom-login-page' ) . '</p>';
-						break;
-
-					case 'empty' :
-						$message .= '<p class="login-msg">' . __( '<strong>ERROR:</strong> Username and/or Password is empty.', 'wds-custom-login-page' ) . '</p>';
-						break;
-
-					case 'false' :
-						$message .= '<p class="login-msg">' . __( 'You have been logged out. You will be redirected to the home page in 5 seconds.', 'wds-custom-login-page' ) . '</p>';
-						$message .= '<p><a href="' . home_url() . '">' . __( 'Go there now.', 'wds-custom-login-page' ) . '</a></p>';
-						$redirect = '<script type="text/javascript">setTimeout("window.location=\'' . home_url() . '\'",5000);</script>';
-						return $content. $message . $redirect;
-
-					default :
-						break;
-				}
+				$message = $this->get_message( $login );
 
 			}
 
 			// Return the post content (if there is any), the message (if there is any), and the login form with the passed args.
 			return $content . $message . $this->render_login_form();
 
+		}
+
+		/**
+		 * Return one of several possible messages depending on what the login request returns.
+		 * @param  string $login The URL query string value for the login parameter.
+		 * @return string        A message about the login attempt.
+		 */
+		public function get_message( $login = '' ) {
+			$message = '';
+
+			// Get the login query string, if it exists.
+			if ( '' == $login ) {
+				$login = ( isset( $_GET['login'] ) ) ? $_GET['login'] : 0;
+			}
+
+			// If there's still no login query string, bail.
+			if ( ! $login ) {
+				return;
+			}
+
+			switch ( $login ) {
+
+				case 'failed' :
+					$message .= '<p class="login-msg">' . __( '<strong>ERROR:</strong> Invalid username and/or password.', 'wds-custom-login-page' ) . '</p>';
+					break;
+
+				case 'empty' :
+					$message .= '<p class="login-msg">' . __( '<strong>ERROR:</strong> Username and/or Password is empty.', 'wds-custom-login-page' ) . '</p>';
+					break;
+
+				case 'false' :
+					$message .= '<p class="login-msg">' . __( 'You have been logged out. You will be redirected to the home page in 5 seconds.', 'wds-custom-login-page' ) . '</p>';
+					$message .= '<p><a href="' . home_url() . '">' . __( 'Go there now.', 'wds-custom-login-page' ) . '</a></p>';
+					$redirect = '<script type="text/javascript">setTimeout("window.location=\'' . home_url() . '\'",5000);</script>';
+					return $message . $redirect;
+
+				default :
+					break;
+			}
+
+			return $message;
 		}
 
 		/**
@@ -307,4 +332,16 @@ function wds_custom_login_page() {
  */
 function wds_login_form( $redirect = '', $echo = false ) {
 	return wds_custom_login_page()->render_login_form( $redirect, $echo );
+}
+
+/**
+ * Return one of several possible messages depending on what the login request returns.
+ * @return string        A message about the login attempt.
+ */
+function wds_login_form_message( $echo = false ) {
+	if ( $echo ) {
+		echo wds_custom_login_page()->get_message(); // WPCS: XSS ok.
+		return;
+	}
+	return wds_custom_login_page()->get_message();
 }
