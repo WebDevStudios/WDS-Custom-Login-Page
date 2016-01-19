@@ -197,6 +197,10 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 * Default login form if there's no login template found
 		 */
 		public function insert_login_form( $content ) {
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				return $content; // Don't do it over Ajax.
+			}
+
 			// Bail if we aren't on the login page.
 			if ( ! is_admin() && ! is_page( 'login' ) && ! is_page( wds_login_slug() ) ) {
 				return $content;
