@@ -166,7 +166,9 @@ function wds_login_options() {
  * @return mixed       Option value
  */
 function wds_login_get_option( $key = '' ) {
-	return cmb2_get_option( wds_login_options()->key, $key );
+	if ( function_exists( 'cmb2_get_option' ) ) {
+		return cmb2_get_option( wds_login_options()->key, $key );
+	}
 }
 
 function wds_login_page() {
