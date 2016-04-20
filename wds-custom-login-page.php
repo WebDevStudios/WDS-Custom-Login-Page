@@ -28,6 +28,8 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 			$this->directory_path = plugin_dir_path( __FILE__ );
 			$this->directory_url  = plugins_url( dirname( $this->basename ) );
 
+			$this->redirect_login_page = apply_filters( 'wds_clp_redirect_login_page', true );
+
 			// Include required files.
 			require_once( $this->directory_path . '/inc/options.php' );
 			require_once( $this->directory_path . '/inc/cmb2/init.php' );
@@ -146,6 +148,9 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 * Check if a username or password were left blank, redirect to login page if they were
 		 */
 		public function verify_username_password( $user, $username, $password ) {
+			if ( ! $this->redirect_login_page ) {
+				return $user;
+			}
 
 			// If they were actually getting here because of an empty login.
 			if ( '' == $username || '' == $password ) {
@@ -167,6 +172,10 @@ if ( ! class_exists( 'WDS_Custom_Login_Page' ) ) {
 		 * Redirect all login requests to...you guessed it...the login page
 		 */
 		public function redirect_login_page() {
+			if ( ! $this->redirect_login_page ) {
+				return;
+			}
+			
 			$page_viewed = basename($_SERVER['REQUEST_URI']);
 
 			if ( 'wp-login.php' == $page_viewed && $_SERVER['REQUEST_METHOD'] == 'GET') {
