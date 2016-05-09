@@ -160,15 +160,20 @@ function wds_login_options() {
 }
 
 /**
- * Wrapper function around cmb2_get_option
+ * Get an option from options array via key.
+ * 
  * @since  0.1.0
  * @param  string $key Options array key.
  * @return mixed       Option value
  */
 function wds_login_get_option( $key = '' ) {
-	if ( function_exists( 'cmb2_get_option' ) ) {
-		return cmb2_get_option( wds_login_options()->key, $key );
+	$options = get_option( wds_login_options()->key );
+
+	if ( ! isset( $options[ $key ] ) ) {
+		return null;
 	}
+
+	return $options[ $key ];
 }
 
 function wds_login_page() {
