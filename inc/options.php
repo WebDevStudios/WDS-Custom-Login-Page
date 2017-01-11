@@ -104,7 +104,7 @@ class WDS_Login_Page_Options {
 
 		$cmb->add_field( array(
 			'name'    => __( 'Login Page', 'maintainn' ),
-			'desc'    => __( 'field description (optional)', 'maintainn' ),
+			'desc'    => __( 'The page to use as your custom login page (default is the Login page created by the plugin).', 'maintainn' ),
 			'id'      => 'login_slug',
 			'type'    => 'select',
 			'options' => $this->get_page_list(),
